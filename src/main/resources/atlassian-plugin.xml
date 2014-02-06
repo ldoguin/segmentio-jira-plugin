@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atlassian-plugin key="${project.groupId}.${project.artifactId}"
+	name="${project.name}" plugins-version="2">
+	<plugin-info>
+		<description>${project.description}</description>
+		<version>${project.version}</version>
+		<vendor name="${project.organization.name}" url="${project.organization.url}" />
+		<param name="plugin-icon">images/pluginIcon.png</param>
+		<param name="plugin-logo">images/pluginLogo.png</param>
+	</plugin-info>
+
+  <component-import key="pluginSettingsFactory"
+    interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
+
+  <component key="segmentioService" name="SegmentIO Configuration Service"
+    class="com.nuxeo.segmentio.config.SegmentIOConfig" />
+
+	<web-item key="segmentIOConfigActionLink" section="admin_plugins_menu/integrations_section"
+		i18n-name-key="com.nuxeo.segmentio.config.adminLink" name="Configure SegmentIO"
+		weight="1">
+		<label key="com.nuxeo.segmentio.config.adminLink" />
+		<link linkId="segmentIOActionLink">/secure/admin/SegmentIOConfigAction.jspa</link>
+	</web-item>
+	
+	<webwork1 key="segmentIOConfigAction" name="SegmentIO Config Action">
+		<actions>
+			<action name="com.nuxeo.segmentio.config.SegmentIOConfigAction"
+				alias="SegmentIOConfigAction">
+				<view name="success">/templates/segmentio/config.vm</view>
+				<view name="input">/templates/segmentio/config.vm</view>
+			</action>
+		</actions>
+	</webwork1>
+
+	<resource type="i18n" name="i18n" location="i18n.messages" />
+
+	<web-panel name="segment.io" i18n-name-key="segment-.io.name"
+		key="segment-.io" location="atl.header.after.scripts" weight="1000">
+		<context-provider class="com.nuxeo.segmentio.SegmentIOTracker" />
+		<resource name="view" type="velocity" location="/templates/segmentio/segmentio-tracker.vm" />
+	</web-panel>
+
+</atlassian-plugin>
